@@ -4,11 +4,11 @@
   "service": "app",
   "workspaceFolder": "/workspace",
 
-  "features": {
-    "ghcr.io/devcontainers/features/docker-in-docker:2": {
-      "moby": false
-    }
-  },
+  #"features": {
+  #  "ghcr.io/devcontainers/features/docker-in-docker:2": {
+  #    "moby": false
+  #  }
+  #},
 
   "forwardPorts": [8080],
 
