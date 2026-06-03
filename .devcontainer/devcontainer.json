@@ -3,6 +3,8 @@
   "dockerComposeFile": "docker-compose.yml",
   "service": "app",
   "workspaceFolder": "/workspace",
+  "runServices": ["db"],
+  "shutdownAction": "stopCompose",
 
   "forwardPorts": [8080],
 
