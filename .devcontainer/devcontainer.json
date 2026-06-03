@@ -8,6 +8,7 @@
 
   "forwardPorts": [8080],
 
+  "postStartCommand": "sudo chown -R vscode:vscode /workspace",
   "postCreateCommand": "./mvnw clean compile",
 
   "customizations": {
