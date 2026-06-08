@@ -13,7 +13,11 @@ push-workspace-image:
 	docker push registry.michaelkueller.com/mk/coder-workspace-podman:latest
 
 debug-workspace-image: 
-	docker run -it --rm workspace:latest bash
+	docker run \
+	--security-opt seccomp=unconfined \
+	--security-opt apparmor=unconfined \
+	--device /dev/fuse \
+	--rm workspace:latest bash -c "podman info"
 
 run: 
 	./mvnw spring-boot:run

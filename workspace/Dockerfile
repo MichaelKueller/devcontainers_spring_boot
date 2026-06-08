@@ -2,23 +2,23 @@
 
 
 
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 LABEL org.opencontainers.image.description="Base Ubuntu image for rootless podman in Coder. See https://coder.com/docs/v2/latest/templates/docker-in-docker#rootless-podman"
 
 USER root
 
 # Install dependencies
-RUN apt-get update && apt-get install -y sudo gnupg2 curl vim fuse-overlayfs libvshadow-utils openssh-client btop
+RUN apt-get update && apt-get install -y sudo gnupg2 curl vim fuse-overlayfs libvshadow-utils openssh-client btop libcap2-bin uidmap slirp4netns
 
 # Install podman
 RUN mkdir -p /etc/apt/keyrings
-RUN curl -fsSL https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/xUbuntu_22.04/Release.key \
+RUN curl -fsSL https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/xUbuntu_24.04/Release.key \
   | gpg --dearmor \
   | tee /etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg > /dev/null
 RUN echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/devel_kubic_libcontainers_unstable.gpg]\
-    https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/xUbuntu_22.04/ /" \
+    https://download.opensuse.org/repositories/devel:kubic:libcontainers:unstable/xUbuntu_24.04/ /" \
   | tee /etc/apt/sources.list.d/devel:kubic:libcontainers:unstable.list > /dev/null
 RUN apt-get update && apt-get -y install podman
 
@@ -66,8 +66,7 @@ RUN apt install -y \
   git
  
 # Podman-Compose - install system-wide as root
-RUN apt install -y python3-pip
-RUN pip3 install podman-compose
+RUN apt install -y podman-compose
 
 # Symlink as docker-compose so devcontainers-cli finds it
 RUN ln -sf /usr/local/bin/podman-compose /usr/local/bin/docker-compose
