@@ -1,0 +1,36 @@
+stages:
+  - build
+  - push
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: "/certs"
+
+build-workspace-image:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - make build-workspace-image
+  artifacts:
+    reports:
+      dotenv: build.env
+  only:
+    - main
+
+push-workspace-image:
+  stage: push
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u $REGISTRY_USER -p $REGISTRY_PASSWORD registry.michaelkueller.com
+  script:
+    - make push-workspace-image
+  dependencies:
+    - build-workspace-image
+  only:
+    - main
