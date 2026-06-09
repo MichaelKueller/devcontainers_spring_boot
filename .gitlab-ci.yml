@@ -14,19 +14,6 @@ build-workspace-image:
   before_script:
     - dnf install -y make
   script:
-    - cat /proc/self/status | grep Seccomp
-    - unshare --user --pid echo "user namespaces work"
-
-    - mkdir -p /etc/containers
-    - |
-      cat > /etc/containers/containers.conf << EOF
-      [containers]
-      default_capabilities = []
-      
-      [engine]
-      isolation = "chroot"
-      EOF
-
     - buildah --isolation chroot build -t workspace:latest -f workspace/Dockerfile workspace
     - make build-workspace-image
   artifacts:
