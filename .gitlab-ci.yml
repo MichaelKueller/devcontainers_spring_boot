@@ -11,6 +11,8 @@ build-workspace-image:
   before_script:
     - dnf install -y make
   script:
+    - echo "BUILDAH_ISOLATION=$BUILDAH_ISOLATION"
+    - echo "whoami=$(whoami)"
     - make build-workspace-image
   artifacts:
     reports:
