@@ -31,6 +31,9 @@ build-workspace-image:
     - find / -name "newuidmap" 2>/dev/null
     - find / -name "newgidmap" 2>/dev/null
 
+    - ls -la /usr/bin/newuidmap
+    - ls -la /usr/bin/newgidmap
+
     - which newuidmap && ls -la $(which newuidmap)
     - which newgidmap && ls -la $(which newgidmap)
     - cat /etc/subuid
