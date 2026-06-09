@@ -3,7 +3,10 @@ stages:
   - push
 
 variables:
+  BUILDAH_ISOLATION: chroot
   STORAGE_DRIVER: vfs
+  BUILD_STORAGE_DRIVER: vfs
+  CONTAINER_STORAGE_DRIVER: vfs
 
 build-workspace-image:
   stage: build
