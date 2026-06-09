@@ -13,6 +13,8 @@ build-workspace-image:
   script:
     - echo "BUILDAH_ISOLATION=$BUILDAH_ISOLATION"
     - echo "whoami=$(whoami)"
+    - buildah version
+    - cat /proc/self/status | grep -E "^(Uid|Gid|CapEff)"
     - buildah --isolation chroot build -t workspace:latest -f workspace/Dockerfile workspace
     - make build-workspace-image
   artifacts:
