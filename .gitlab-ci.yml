@@ -20,6 +20,8 @@ build-workspace-image:
       [engine]
       isolation = "chroot"
       EOF
+    - cat /proc/self/status | grep -E "^(Uid|Gid|CapEff|CapPrm)"
+    - capsh --decode=$(grep CapEff /proc/self/status | awk '{print $2}')
     - capsh --decode=00000000a80405fb
     - echo "BUILDAH_ISOLATION=$BUILDAH_ISOLATION"
     - echo "whoami=$(whoami)"
