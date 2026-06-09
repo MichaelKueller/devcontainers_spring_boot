@@ -14,8 +14,9 @@ build-workspace-image:
   before_script:
     - dnf install -y make
   script:
-    - unshare --user --pid echo "user namespaces work"
     - cat /proc/self/status | grep Seccomp
+    - unshare --user --pid echo "user namespaces work"
+
     - mkdir -p /etc/containers
     - |
       cat > /etc/containers/containers.conf << EOF
