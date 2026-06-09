@@ -23,6 +23,11 @@ build-workspace-image:
       [engine]
       isolation = "chroot"
       EOF
+
+    - cat /etc/containers/containers.conf 2>/dev/null || echo "not found"
+    - cat /etc/containers/storage.conf 2>/dev/null || echo "not found"
+    - cat /usr/share/containers/containers.conf 2>/dev/null || echo "not found"
+
     - cat /proc/sys/user/max_user_namespaces
     - cat /proc/self/status | grep -E "^(Uid|Gid|CapEff|CapPrm)"
     - capsh --decode=$(grep CapEff /proc/self/status | awk '{print $2}')
