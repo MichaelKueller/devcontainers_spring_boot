@@ -7,7 +7,7 @@ variables:
 
 build-workspace-image:
   stage: build
-  image: quay.io/buildah/stable:v1.33.0
+  image: quay.io/buildah/stable:v1.33
   before_script:
     - dnf install -y make
   script:
