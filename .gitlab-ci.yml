@@ -20,6 +20,7 @@ build-workspace-image:
       [engine]
       isolation = "chroot"
       EOF
+    - cat /proc/sys/user/max_user_namespaces
     - cat /proc/self/status | grep -E "^(Uid|Gid|CapEff|CapPrm)"
     - capsh --decode=$(grep CapEff /proc/self/status | awk '{print $2}')
     - capsh --decode=00000000a80405fb
