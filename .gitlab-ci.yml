@@ -14,7 +14,6 @@ build-workspace-image:
   before_script:
     - dnf install -y make
   script:
-    - buildah --isolation chroot build -t workspace:latest -f workspace/Dockerfile workspace
     - make build-workspace-image
   artifacts:
     reports:
