@@ -83,7 +83,18 @@ ENV DOCKER_BUILDKIT=0
 
 # Install Node.js and npm. It is a prerequisite for devcontainers-cli
 # Needs to be done as podman user, otherwise npm will be installed globally and not in the user's home directory
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+# Make sure retry logic is in place to handle transient network issues during the installation process
+RUN curl \
+    --fail \
+    --silent \
+    --show-error \
+    --location \
+    --retry 5 \
+    --retry-delay 10 \
+    --retry-all-errors \
+    https://deb.nodesource.com/setup_22.x | bash -
+
+
 RUN apt install -y nodejs
 
 RUN chown -R 1000:1000 /usr/lib/node_modules \
