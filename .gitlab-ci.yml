@@ -3,26 +3,13 @@ stages:
   - push
 
 variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_TLS_CERTDIR: ""
-  DOCKER_HOST: tcp://docker:2375
-
-services:
-  - name: docker:dind
-    alias: docker
+  STORAGE_DRIVER: vfs
 
 build-workspace-image:
   stage: build
-  image: docker:latest
-  services:
-    - docker:dind
+  image: quay.io/buildah/stable
   before_script:
-    - apk add --no-cache make
-    - |
-      until docker info 2>&1; do
-        echo "Waiting for docker daemon..."
-        sleep 1
-      done
+    - dnf install -y make
   script:
     - make build-workspace-image
   artifacts:
@@ -33,9 +20,9 @@ build-workspace-image:
 
 push-workspace-image:
   stage: push
-  image: docker:latest
-  services:
-    - docker:dind
+  image: quay.io/buildah/stable
+  before_script:
+    - dnf install -y make
   script:
     - make push-workspace-image
   dependencies:
