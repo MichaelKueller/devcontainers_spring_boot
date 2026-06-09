@@ -11,6 +11,15 @@ build-workspace-image:
   before_script:
     - dnf install -y make
   script:
+    - mkdir -p /etc/containers
+    - |
+      cat > /etc/containers/containers.conf << EOF
+      [containers]
+      default_capabilities = []
+      
+      [engine]
+      isolation = "chroot"
+      EOF
     - echo "BUILDAH_ISOLATION=$BUILDAH_ISOLATION"
     - echo "whoami=$(whoami)"
     - buildah version
