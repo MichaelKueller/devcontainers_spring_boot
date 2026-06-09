@@ -28,6 +28,11 @@ build-workspace-image:
     - cat /etc/containers/storage.conf 2>/dev/null || echo "not found"
     - cat /usr/share/containers/containers.conf 2>/dev/null || echo "not found"
 
+    - which newuidmap && ls -la $(which newuidmap)
+    - which newgidmap && ls -la $(which newgidmap)
+    - cat /etc/subuid
+    - cat /etc/subgid
+
     - cat /proc/sys/user/max_user_namespaces
     - cat /proc/self/status | grep -E "^(Uid|Gid|CapEff|CapPrm)"
     - capsh --decode=$(grep CapEff /proc/self/status | awk '{print $2}')
