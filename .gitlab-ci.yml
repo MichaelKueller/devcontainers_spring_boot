@@ -19,7 +19,7 @@ build-workspace-image:
   before_script:
     - apk add --no-cache make
     - |
-      until docker info > /dev/null 2>&1; do
+      until docker info 2>&1; do
         echo "Waiting for docker daemon..."
         sleep 1
       done
