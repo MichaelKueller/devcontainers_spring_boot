@@ -12,6 +12,8 @@ build-workspace-image:
   stage: build
   image: quay.io/buildah/stable
   before_script:
+    - chmod u+s /usr/bin/newuidmap
+    - chmod u+s /usr/bin/newgidmap
     - dnf install -y make
   script:
     - mkdir -p /etc/containers
