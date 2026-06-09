@@ -20,6 +20,7 @@ build-workspace-image:
       [engine]
       isolation = "chroot"
       EOF
+    - capsh --decode=00000000a80405fb
     - echo "BUILDAH_ISOLATION=$BUILDAH_ISOLATION"
     - echo "whoami=$(whoami)"
     - buildah version
