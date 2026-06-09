@@ -14,21 +14,8 @@ build-workspace-image:
   before_script:
     - dnf install -y make
   script:
-    - make build-workspace-image
-  artifacts:
-    reports:
-      dotenv: build.env
+    - make build-workspace-image push-workspace-image
+  # Only builds when changes are pushed to the main branch
   only:
     - main
 
-push-workspace-image:
-  stage: push
-  image: quay.io/buildah/stable
-  before_script:
-    - dnf install -y make
-  script:
-    - make push-workspace-image
-  dependencies:
-    - build-workspace-image
-  only:
-    - main
