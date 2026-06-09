@@ -12,7 +12,6 @@ build-workspace-image:
   stage: build
   image: quay.io/buildah/stable
   before_script:
-    - dnf install -y make
     - dnf install -y make shadow-utils
   script:
     - mkdir -p /etc/containers
