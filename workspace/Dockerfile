@@ -2,14 +2,17 @@
 
 
 
+FROM node:22 AS node
+
 FROM ubuntu:24.04
+COPY --from=node /usr/local /usr/local
 
 LABEL org.opencontainers.image.description="Base Ubuntu image for rootless podman in Coder. See https://coder.com/docs/v2/latest/templates/docker-in-docker#rootless-podman"
 
 USER root
 
 # Install dependencies
-RUN apt-get update && apt-get install -y sudo gnupg2 curl vim fuse-overlayfs libvshadow-utils openssh-client btop libcap2-bin uidmap slirp4netns
+RUN apt-get update && apt-get install -y sudo gnupg2 curl vim fuse-overlayfs libvshadow-utils openssh-client btop libcap2-bin uidmap slirp4netns git
 
 # Install podman
 RUN mkdir -p /etc/apt/keyrings
@@ -60,11 +63,7 @@ RUN chsh -s /bin/bash podman
 
 ## Podman Compose
 RUN echo 'export COMPOSE_CMD=podman-compose' >> ~/.bashrc
-           
-RUN apt update
-RUN apt install -y \
-  git
- 
+            
 # Podman-Compose - install system-wide as root
 RUN apt install -y podman-compose
 
@@ -81,23 +80,24 @@ ENV DOCKER_BUILDKIT=0
 #podman system service --time=0 tcp:127.0.0.1:2375 &
 
 
+## Remove: NodeJS is now installed from the node image, so this is not needed anymore. If we need to install additional npm packages globally, we can do that in a later step.
 # Install Node.js and npm. It is a prerequisite for devcontainers-cli
 # Needs to be done as podman user, otherwise npm will be installed globally and not in the user's home directory
 # Make sure retry logic is in place to handle transient network issues during the installation process
-RUN curl \
-    --fail \
-    --silent \
-    --show-error \
-    --location \
-    --retry 5 \
-    --retry-delay 10 \
-    --retry-all-errors \
-    https://deb.nodesource.com/setup_22.x | bash -
+# RUN curl \
+#     --fail \
+#     --silent \
+#     --show-error \
+#     --location \
+#     --retry 5 \
+#     --retry-delay 10 \
+#     --retry-all-errors \
+#     https://deb.nodesource.com/setup_22.x | bash -
 
 
-RUN apt install -y nodejs
+# RUN apt install -y nodejs
 
-RUN chown -R 1000:1000 /usr/lib/node_modules \
+RUN chown -R 1000:1000 "$(npm root -g)" \
  && chown 1000:1000 /usr/bin
 
 USER podman

@@ -20,7 +20,7 @@ debug-workspace-image:
 	--security-opt seccomp=unconfined \
 	--security-opt apparmor=unconfined \
 	--device /dev/fuse \
-	--rm workspace:latest bash -c "podman info"
+	--rm workspace:latest bash -c "podman info && node --version"
 
 run: 
 	./mvnw spring-boot:run
